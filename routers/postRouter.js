@@ -1,6 +1,8 @@
-// const postRouter = require("express").Router();
-// const PostController = require("../controllers/user.controller");
+const postRouter = require("express").Router();
+const PostController = require("../controllers/post.controller");
+const authentication = require("../middlewares/authentication");
 
-// postRouter.get("/", PostController.getAllPosts);
+postRouter.post("/create", authentication, PostController.createPost);
+postRouter.get("/:id", authentication, PostController.getPost);
 
-// module.exports = postRouter;
+module.exports = postRouter;

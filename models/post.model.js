@@ -1,12 +1,21 @@
 const mongoose = require("mongoose");
 
-const Post = mongoose.Schema({
-  title: {
-    type: String,
-    require: true,
+const Post = mongoose.Schema(
+  {
+    title: {
+      type: String,
+      require: true,
+    },
+    des: {
+      type: String,
+    },
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "users",
+    },
   },
-  des: {
-    type: String,
-  },
-});
-module.exports = mongoose.model("post", Post);
+  {
+    timestamps: true,
+  }
+);
+module.exports = mongoose.model("posts", Post);

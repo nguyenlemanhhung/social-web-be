@@ -28,24 +28,24 @@ class UserController {
     }
 
     checkExist.password = "";
-    console.log("checkExist:", checkExist._id);
+    // console.log("checkExist:", checkExist._id);
 
-    const accessToken = jwt.sign({
-      userId: checkExist._id,
-    });
-
-    console.log("accessToken:", accessToken);
-
-    console.log("env:", process.env.JWT_SECRET);
-    console.log("res: ", res.status);
-
-    return res.status(200).json(
+    const accessToken = jwt.sign(
       {
-        user: checkExist,
-        token: accessToken,
+        userId: checkExist._id,
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
     );
+
+    // console.log("accessToken:", accessToken);
+
+    return res.status(200).json({
+      user: checkExist,
+      token: accessToken,
+    });
   }
 
   async signUp(req, res) {
@@ -77,6 +77,10 @@ class UserController {
 
   async logOut(req, res) {
     req.session.user = null;
+  }
+
+  async getUser(req, res) {
+    return res.status(200).json({ message: "pass" });
   }
 }
 
