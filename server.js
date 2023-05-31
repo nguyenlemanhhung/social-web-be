@@ -24,6 +24,6 @@ app.use(
 
 app.use(rootRouter);
 
-app.listen(process.env.PORT || 4000, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`listening on http://localhost/${process.env.PORT}`);
 });
