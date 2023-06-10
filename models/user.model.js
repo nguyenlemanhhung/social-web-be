@@ -4,7 +4,6 @@ const User = mongoose.Schema(
   {
     username: {
       type: String,
-      require: true,
     },
     email: {
       type: String,
@@ -13,6 +12,12 @@ const User = mongoose.Schema(
     password: {
       type: String,
       require: true,
+    },
+    phonenumber: {
+      type: String,
+    },
+    signature: {
+      type: String,
     },
   },
   {

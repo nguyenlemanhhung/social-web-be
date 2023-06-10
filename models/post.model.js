@@ -2,11 +2,14 @@ const mongoose = require("mongoose");
 
 const Post = mongoose.Schema(
   {
-    title: {
+    content: {
       type: String,
       require: true,
     },
-    des: {
+    image: {
+      type: String,
+    },
+    video: {
       type: String,
     },
     user: {

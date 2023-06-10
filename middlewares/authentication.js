@@ -1,3 +1,4 @@
+const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
 const authentication = async (req, res, next) => {
@@ -15,8 +16,12 @@ const authentication = async (req, res, next) => {
     if (!checkToken) {
       return res.status(401).json({ message: "Không được xác thực" });
     }
-    const user = checkToken.userId;
-    req.user = user;
+    const userId = checkToken.userId;
+    // console.log("user id:", userId);
+    // const user = await userModel.findById(userId);
+    // console.log("user:", user);
+    req.user = userId;
+
     next();
   } catch (error) {
     return res.status(401).json({ message: "Không được xác thực" });

@@ -4,7 +4,7 @@ const authentication = require("../middlewares/authentication");
 
 userRouter.post("/sign-in", UserController.signIn);
 userRouter.post("/sign-up", UserController.signUp);
-userRouter.get("/log-out", UserController.logOut);
-userRouter.get("/", authentication, UserController.getUser);
+userRouter.get("/current", authentication, UserController.getUser);
+userRouter.put("/edit-profile", authentication, UserController.editProfileUser);
 
 module.exports = userRouter;

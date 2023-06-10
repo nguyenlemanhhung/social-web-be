@@ -3,6 +3,10 @@ const PostController = require("../controllers/post.controller");
 const authentication = require("../middlewares/authentication");
 
 postRouter.post("/create", authentication, PostController.createPost);
-postRouter.get("/:id", authentication, PostController.getPost);
+postRouter.get(
+  "/my-post",
+  authentication,
+  PostController.getAllPostsByCurrentUser
+);
 
 module.exports = postRouter;
