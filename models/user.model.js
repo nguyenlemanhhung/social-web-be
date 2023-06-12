@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const User = mongoose.Schema(
   {
+    avatar: {
+      type: String,
+    },
+    banner: {
+      type: String,
+    },
     username: {
       type: String,
     },
