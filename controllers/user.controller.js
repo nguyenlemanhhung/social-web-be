@@ -7,49 +7,52 @@ const bcrypt = require("bcryptjs");
 
 class UserController {
   async signIn(req, res) {
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
+    try {
+      const username = req.body.username;
+      const email = req.body.email;
+      const password = req.body.password;
 
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "email and password không được để trống" });
-    }
-    const checkExist = await userModel.findOne({ email: email });
-
-    if (!checkExist) {
-      return res.status(401).json({ message: "Tài khoản không tồn tại !!!" });
-    }
-
-    const checkPassword = bcrypt.compareSync(password, checkExist.password);
-
-    if (!checkPassword) {
-      return res.status(401).json({ message: "Mật khẩu không chính xác" });
-    }
-
-    checkExist.password = "";
-
-    const accessToken = jwt.sign(
-      {
-        userId: checkExist._id,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
+      if (!email || !password) {
+        return res
+          .status(400)
+          .json({ message: "email and password không được để trống" });
       }
-    );
-    const post = await postModel
-      .find({ user: checkExist._id })
-      .populate("user");
-    const postCount = post.length;
-    console.log("post:", post);
+      const checkExist = await userModel.findOne({ email: email });
 
-    return res.status(200).json({
-      user: checkExist,
-      token: accessToken,
-      metadata: { post_count: postCount, following_count: 100 },
-    });
+      if (!checkExist) {
+        return res.status(401).json({ message: "Tài khoản không tồn tại !!!" });
+      }
+
+      const checkPassword = bcrypt.compareSync(password, checkExist.password);
+
+      if (!checkPassword) {
+        return res.status(401).json({ message: "Mật khẩu không chính xác" });
+      }
+
+      checkExist.password = "";
+
+      const accessToken = jwt.sign(
+        {
+          userId: checkExist._id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
+      const post = await postModel
+        .find({ user: checkExist._id })
+        .populate("user");
+      const postCount = post.length;
+
+      return res.status(200).json({
+        user: checkExist,
+        token: accessToken,
+        metadata: { post_count: postCount, following_count: 100 },
+      });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
   }
 
   async signUp(req, res) {
@@ -93,7 +96,7 @@ class UserController {
     });
   }
 
-  async getUser(req, res) {
+  async getCurrentUser(req, res) {
     try {
       const userId = req.user;
 
@@ -107,6 +110,20 @@ class UserController {
       return res.json({
         user: user,
         metadata: { post_count: postCount, following_count: 100 },
+      });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  }
+
+  async getAllUsers(req, res) {
+    try {
+      const users = await userModel.find();
+      if (!users) {
+        return res.json({ message: "Không có user" });
+      }
+      return res.json({
+        users: users,
       });
     } catch (error) {
       return res.status(400).json(error);
@@ -136,9 +153,6 @@ class UserController {
         return result.status(400).json("no document found");
       }
       return res.status(200).json(result);
-
-      console.log("user: ", result);
-      // return res.status(200).json("Updated User : ", user);
     } catch (error) {
       console.error("catch: ", error);
       return res.status(400).json(error);

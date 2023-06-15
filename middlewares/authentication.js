@@ -17,9 +17,7 @@ const authentication = async (req, res, next) => {
       return res.status(401).json({ message: "Không được xác thực" });
     }
     const userId = checkToken.userId;
-    // console.log("user id:", userId);
-    // const user = await userModel.findById(userId);
-    // console.log("user:", user);
+    
     req.user = userId;
 
     next();
