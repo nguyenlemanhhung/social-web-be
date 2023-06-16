@@ -20,7 +20,10 @@ class PostController {
       const posts = await postModel
         .find()
         .populate("user")
-        .populate("comments");
+        .populate({
+          path: "comments",
+          populate: { path: "user" },
+        });
       return res.status(200).json(posts);
     } catch (error) {
       return res.status(500).json(error);
