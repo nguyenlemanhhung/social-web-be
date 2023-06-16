@@ -79,9 +79,10 @@ class UserController {
       email: email,
       password: hash,
     });
+    // console.log("result:", result);
     const accessToken = jwt.sign(
       {
-        userId: checkExist._id,
+        userId: result._id,
       },
       process.env.JWT_SECRET,
       {

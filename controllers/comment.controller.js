@@ -12,10 +12,11 @@ class CommentController {
         user: req.user,
         post: post_id,
       });
-      await comment.save();
+      const commentWithUser = await comment.populate("user");
+      // await commentWithUser.save();
       const postByPostID = await postModel.findById(post_id);
 
-      postByPostID.comments.push(comment);
+      postByPostID.comments.push(commentWithUser);
 
       await postByPostID.save();
 
